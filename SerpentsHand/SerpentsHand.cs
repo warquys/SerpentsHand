@@ -18,7 +18,7 @@ namespace SerpentsHand
     {
         public override uint Id { get; set; } = 1;
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
-        public override int MaxHealth { get; set; } = 120;
+        public override int MaxHealth { get; set; } = 100;
         public override string Name { get; set; } = "Serpents Hand";
         public override string Description { get; set; } = "Help the SCPs by killing all other classes";
         public override string CustomInfo { get; set; } = "Serpents Hand";
