@@ -62,11 +62,6 @@ namespace SerpentsHand
             $"{ItemType.ArmorCombat}"
         };
 
-        public override Dictionary<AmmoType, ushort> Ammo { get; set; } = new()
-        {
-            { AmmoType.Nato9, 120 }
-        };
-
         public override SpawnProperties SpawnProperties { get; set; } = new()
         {
             StaticSpawnPoints = new List<StaticSpawnPoint>
@@ -78,6 +73,10 @@ namespace SerpentsHand
                     Chance = 100
                 }
             }
+        };
+        public override Dictionary<AmmoType, ushort> Ammo { get; set; } = new()
+        {
+            { AmmoType.Nato9, 120 }
         };
 
         protected override void SubscribeEvents()
