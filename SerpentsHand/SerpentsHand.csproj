@@ -12,36 +12,23 @@
 		<PackageReference Include="EXILED" Version="8.2.1" />
 	</ItemGroup>
 	<ItemGroup>
-		<Reference Include="Assembly-CSharp">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\Assembly-CSharp-Publicized.dll</HintPath>
-		</Reference>
 		<Reference Include="Assembly-CSharp-firstpass">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\Assembly-CSharp-firstpass.dll</HintPath>
+			<HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
 		</Reference>
-		<Reference Include="CommandSystem.Core">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\CommandSystem.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="Exiled.API" />
-		<Reference Include="Assembly-CSharp">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\Assembly-CSharp-Publicized.dll</HintPath>
+		<Reference Include="Assembly-CSharp-Publicized">
+			<HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
 		</Reference>
 		<Reference Include="Mirror">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\Mirror.dll</HintPath>
+			<HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\UnityEngine.dll</HintPath>
-		</Reference>
-		<Reference Include="Exiled.Events" />
-		<Reference Include="System.Core">
-			<HintPath>/usr/share/dotnet/shared/Microsoft.NETCore.App/3.1.10/System.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="Exiled.Permissions" />
-		<Reference Include="Exiled.CustomItems" />
-		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\UnityEngine.CoreModule.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.PhysicsModule">
-			<HintPath>..\..\..\..\Downloads\Master Exiled\UnityEngine.PhysicsModule.dll</HintPath>
-		</Reference>
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
 	</ItemGroup>
 </Project>
