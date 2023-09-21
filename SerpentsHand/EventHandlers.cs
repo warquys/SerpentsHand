@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Loader;
 using MEC;
@@ -55,7 +56,7 @@ namespace SerpentsHand
           {
                Timing.CallDelayed(0.25f, delegate
                {
-                    RoundSummary.singleton.ChaosTargetCount = (plugin.Config.ScpAndChaosTogether ? 0 : Player.List.Count(p => p.IsCHI));
+                    UpdateChaosCounter();
                });
                if (plugin.IsSpawnable)
                {
@@ -100,61 +101,23 @@ namespace SerpentsHand
                bool scientistsAlive = Player.List.Any(p => p.Role.Type == RoleTypeId.Scientist);
                bool shAlive = plugin.Config.SerpentsHand.TrackedPlayers.Count > 0;
 
-               if(shAlive)
+               if (shAlive)
                {
-                    if(mtfAlive) ev.IsRoundEnded = false;
-                    if(dclassAlive) ev.IsRoundEnded = false;
-                    if(scientistsAlive) ev.IsRoundEnded = false;
-                    if(!plugin.Config.ScpAndChaosTogether && ciAlive) ev.IsRoundEnded = false;
+                    if (mtfAlive) ev.IsRoundEnded = false;
+                    if (dclassAlive) ev.IsRoundEnded = false;
+                    if (scientistsAlive) ev.IsRoundEnded = false;
+                    if (!plugin.Config.ScpsWinWithChaos && ciAlive) ev.IsRoundEnded = false;
                }
+          }
 
-               //foreach (Player player in Player.List)
-               //{
-               //     switch (player.Role.Team)
-               //     {
-               //          case Team.FoundationForces:
-               //               mtfAlive = true;
-               //               break;
-               //          case Team.ChaosInsurgency:
-               //               ciAlive = true;
-               //               break;
-               //          case Team.SCPs:
-               //               scpAlive = true;
-               //               break;
-               //          case Team.ClassD:
-               //               dclassAlive = true;
-               //               break;
-               //          case Team.Scientists:
-               //               scientistsAlive = true;
-               //               break;
-               //     }
+          public void OnSpawned(SpawnedEventArgs ev)
+          {
+               UpdateChaosCounter();
+          }
 
-               //     if ((shAlive && ((ciAlive && !plugin.Config.SerpentsHand.ScpsWinWithChaos) || dclassAlive || mtfAlive || scientistsAlive))
-               //         || (shAlive && scpAlive && !mtfAlive && !dclassAlive && !scientistsAlive)
-               //         || ((shAlive || scpAlive) && ciAlive && !plugin.Config.SerpentsHand.ScpsWinWithChaos))
-               //          break;
-               //}
-
-               //if (shAlive && ((ciAlive && !plugin.Config.SerpentsHand.ScpsWinWithChaos) || dclassAlive || mtfAlive || scientistsAlive))
-               //     ev.IsRoundEnded = false;
-               //else if (shAlive && scpAlive && !mtfAlive && !dclassAlive && !scientistsAlive)
-               //{
-               //     if (!plugin.Config.SerpentsHand.ScpsWinWithChaos)
-               //     {
-               //          if (!ciAlive)
-               //          {
-               //               ev.LeadingTeam = LeadingTeam.Anomalies;
-               //               ev.IsRoundEnded = true;
-               //          }
-               //     }
-               //     else
-               //     {
-               //          ev.LeadingTeam = LeadingTeam.Anomalies;
-               //          ev.IsRoundEnded = true;
-               //     }
-               //}
-               //else if ((shAlive || scpAlive) && ciAlive && !plugin.Config.SerpentsHand.ScpsWinWithChaos)
-               //     ev.IsRoundEnded = false;
+          private void UpdateChaosCounter()
+          {
+               RoundSummary.singleton.ChaosTargetCount = plugin.Config.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
           }
      }
 }

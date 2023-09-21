@@ -15,7 +15,7 @@ namespace SerpentsHand
           public int SpawnWaveCalculation { get; set; } = 10;
 
           [Description("If SCPs and Chaos win together")]
-          public bool ScpAndChaosTogether { get; set; } = false;
+          public bool ScpsWinWithChaos { get; set; } = false;
 
           public SerpentsHand SerpentsHand { get; set; } = new();
      }
