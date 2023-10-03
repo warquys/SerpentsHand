@@ -23,9 +23,10 @@ namespace SerpentsHand
 
           public void OnRoundStarted()
           {
-               plugin.IsSpawnable = false;
+               Plugin.Instance.IsSpawnable = false;
                Respawns = 0;
                SHRespawns = 0;
+               Plugin.Instance.IsForced = false;
 
                if (calcuationCoroutine.IsRunning)
                     Timing.KillCoroutines(calcuationCoroutine);
@@ -42,14 +43,14 @@ namespace SerpentsHand
                     if (Round.IsEnded)
                          break;
 
-                    if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != plugin.Config.SpawnWaveCalculation)
+                    if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != Plugin.Instance.Config.SpawnWaveCalculation)
                          continue;
 
                     if (Respawn.NextKnownTeam == SpawnableTeamType.ChaosInsurgency)
-                         plugin.IsSpawnable = Loader.Random.Next(100) <= plugin.Config.SerpentsHand.SpawnChance &&
-                             Respawns >= plugin.Config.SerpentsHand.RespawnDelay &&
-                             SHRespawns < plugin.Config.SerpentsHand.MaxSpawns;
-               }
+                        Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SerpentsHand.SpawnChance &&
+                        Respawns >= Plugin.Instance.Config.SerpentsHand.RespawnDelay &&
+                        SHRespawns < Plugin.Instance.Config.SerpentsHand.MaxSpawns || Plugin.Instance.IsForced;
+            }
           }
 
           public void OnRespawningTeam(RespawningTeamEventArgs ev)
@@ -58,15 +59,15 @@ namespace SerpentsHand
                {
                     UpdateChaosCounter();
                });
-               if (plugin.IsSpawnable)
+               if (Plugin.Instance.IsSpawnable || Plugin.Instance.IsForced)
                {
                     bool scpAlive = Player.List.Count(x => x.Role.Team == Team.SCPs) > 0;
-                    if (!scpAlive && !plugin.Config.SerpentsHand.CanSpawnWithoutScps)
+                    if (!scpAlive && !Plugin.Instance.Config.SerpentsHand.CanSpawnWithoutScps)
                          return;
 
                     List<Player> players = new List<Player>();
-                    if (ev.Players.Count > plugin.Config.SerpentsHand.MaxSquad)
-                         players = ev.Players.GetRange(0, plugin.Config.SerpentsHand.MaxSquad);
+                    if (ev.Players.Count > Plugin.Instance.Config.SerpentsHand.MaxSquad)
+                         players = ev.Players.GetRange(0, Plugin.Instance.Config.SerpentsHand.MaxSquad);
                     else
                          players = ev.Players.GetRange(0, ev.Players.Count);
 
@@ -74,17 +75,18 @@ namespace SerpentsHand
                     {
                          if (player is null)
                               continue;
-                         plugin.Config.SerpentsHand.AddRole(player);
+                         Plugin.Instance.Config.SerpentsHand.AddRole(player);
                     }
                     SHRespawns++;
-                    if (!string.IsNullOrEmpty(plugin.Config.SerpentsHand.EntryAnnoucement))
-                         Cassie.Message(plugin.Config.SerpentsHand.EntryAnnoucement, isSubtitles: plugin.Config.SerpentsHand.Subtitles);
+                    if (!string.IsNullOrEmpty(Plugin.Instance.Config.SerpentsHand.EntryAnnoucement))
+                         Cassie.Message(Plugin.Instance.Config.SerpentsHand.EntryAnnoucement, isSubtitles: Plugin.Instance.Config.SerpentsHand.Subtitles);
 
-                    if (plugin.Config.SerpentsHand.EntryBroadcast.Duration > 0 || !string.IsNullOrEmpty(plugin.Config.SerpentsHand.EntryBroadcast.Content))
+                    if (Plugin.Instance.Config.SerpentsHand.EntryBroadcast.Duration > 0 || !string.IsNullOrEmpty(Plugin.Instance.Config.SerpentsHand.EntryBroadcast.Content))
                          foreach (Player player in Player.List.Where(x => x.Role.Team == Team.SCPs))
-                              player.Broadcast(plugin.Config.SerpentsHand.EntryBroadcast);
+                              player.Broadcast(Plugin.Instance.Config.SerpentsHand.EntryBroadcast);
 
-                    plugin.IsSpawnable = false;
+                    Plugin.Instance.IsSpawnable = false;
+                    Plugin.Instance.IsForced = false;
                     ev.IsAllowed = false;
                     ev.NextKnownTeam = SpawnableTeamType.None;
                }
@@ -99,14 +101,14 @@ namespace SerpentsHand
                bool scpAlive = Player.List.Any(p => p.IsScp);
                bool dclassAlive = Player.List.Any(p => p.Role.Type == RoleTypeId.ClassD);
                bool scientistsAlive = Player.List.Any(p => p.Role.Type == RoleTypeId.Scientist);
-               bool shAlive = plugin.Config.SerpentsHand.TrackedPlayers.Count > 0;
+               bool shAlive = Plugin.Instance.Config.SerpentsHand.TrackedPlayers.Count > 0;
 
                if (shAlive)
                {
                     if (mtfAlive) ev.IsRoundEnded = false;
                     if (dclassAlive) ev.IsRoundEnded = false;
                     if (scientistsAlive) ev.IsRoundEnded = false;
-                    if (!plugin.Config.ScpsWinWithChaos && ciAlive) ev.IsRoundEnded = false;
+                    if (!Plugin.Instance.Config.ScpsWinWithChaos && ciAlive) ev.IsRoundEnded = false;
                }
           }
 
@@ -117,7 +119,7 @@ namespace SerpentsHand
 
           private void UpdateChaosCounter()
           {
-               RoundSummary.singleton.ChaosTargetCount = plugin.Config.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+               RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
           }
      }
 }

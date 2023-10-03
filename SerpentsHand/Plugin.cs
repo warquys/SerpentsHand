@@ -9,16 +9,20 @@ namespace SerpentsHand
     public class Plugin : Plugin<Config>
     {
         public override string Name => "Serpents Hand";
-        public override string Author => "yanox, Michal78900 and Marco15453, Updated to Exiled 8 by Vicious Vikki";
-        public override Version RequiredExiledVersion => new Version(8, 1, 0);
-        public override Version Version => new Version(8, 2, 3);
+        public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki, & Misfiy";
+        public override Version RequiredExiledVersion => new Version(8, 2, 1);
+        public override Version Version => new Version(8, 2, 4);
+
+        public static Plugin Instance;
 
         public bool IsSpawnable = false;
+        public bool IsForced = false;
 
         private EventHandlers eventHandlers;
 
         public override void OnEnabled()
         {
+            Instance = this;
             Config.SerpentsHand.Register();
             eventHandlers = new EventHandlers(this);
 
@@ -36,6 +40,7 @@ namespace SerpentsHand
             Server.EndingRound -= eventHandlers.OnEndingRound;
 
             eventHandlers = null;
+            Instance = null;
             base.OnDisabled();
         }
     }
