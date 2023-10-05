@@ -65,7 +65,7 @@ namespace SerpentsHand
                     if (!scpAlive && !Plugin.Instance.Config.SerpentsHand.CanSpawnWithoutScps)
                          return;
 
-                    List<Player> players = new List<Player>();
+                    List<Player> players = new();
                     if (ev.Players.Count > Plugin.Instance.Config.SerpentsHand.MaxSquad)
                          players = ev.Players.GetRange(0, Plugin.Instance.Config.SerpentsHand.MaxSquad);
                     else
@@ -96,19 +96,11 @@ namespace SerpentsHand
 
           public void OnEndingRound(EndingRoundEventArgs ev)
           {
-               bool mtfAlive = Player.List.Any(p => p.IsNTF);
-               bool ciAlive = Player.List.Any(p => p.IsCHI);
-               bool scpAlive = Player.List.Any(p => p.IsScp);
-               bool dclassAlive = Player.List.Any(p => p.Role.Type == RoleTypeId.ClassD);
-               bool scientistsAlive = Player.List.Any(p => p.Role.Type == RoleTypeId.Scientist);
-               bool shAlive = Plugin.Instance.Config.SerpentsHand.TrackedPlayers.Count > 0;
-
-               if (shAlive)
+               if (plugin.Config.SerpentsHand.TrackedPlayers.Count > 0)
                {
-                    if (mtfAlive) ev.IsRoundEnded = false;
-                    if (dclassAlive) ev.IsRoundEnded = false;
-                    if (scientistsAlive) ev.IsRoundEnded = false;
-                    if (!Plugin.Instance.Config.ScpsWinWithChaos && ciAlive) ev.IsRoundEnded = false;
+                    if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
+                    if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
+                    if (!plugin.Config.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
                }
           }
 
