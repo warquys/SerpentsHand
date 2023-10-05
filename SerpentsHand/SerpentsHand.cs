@@ -109,10 +109,12 @@ namespace SerpentsHand
 
 		private void OnHurting(HurtingEventArgs ev)
 		{
-			if ((Check(ev.Player) && ev.Attacker.Role.Team == Team.SCPs) ||
-			    (ev.Attacker != null && Check(ev.Attacker) && ev.Player.Role.Team == Team.SCPs) ||
-			    (ev.Attacker != null && Check(ev.Attacker) && Check(ev.Player) && ev.Player != ev.Attacker))
+			if ((Check(ev.Player) || Check(ev.Attacker)) && (ev.Player.IsScp || ev.Attacker.IsScp)) 
 				ev.IsAllowed = false;
+			//if ((Check(ev.Player) && ev.Attacker.Role.Team == Team.SCPs) ||
+			//    (ev.Attacker != null && Check(ev.Attacker) && ev.Player.Role.Team == Team.SCPs) ||
+			//    (ev.Attacker != null && Check(ev.Attacker) && Check(ev.Player) && ev.Player != ev.Attacker))
+			//	ev.IsAllowed = false;
 		}
 
 		private void OnShooting(ShootingEventArgs ev)
