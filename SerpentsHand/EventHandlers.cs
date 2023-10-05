@@ -99,8 +99,8 @@ namespace SerpentsHand
                if (plugin.Config.SerpentsHand.TrackedPlayers.Count > 0)
                {
                     if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
-                    if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
-                    if (!plugin.Config.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
+                    else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
+                    else if (!plugin.Config.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
                }
           }
 
