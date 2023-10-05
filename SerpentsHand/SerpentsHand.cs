@@ -109,6 +109,7 @@ namespace SerpentsHand
 
 		private void OnHurting(HurtingEventArgs ev)
 		{
+			if(ev.Attacker is null) return;
 			if ((Check(ev.Player) || Check(ev.Attacker)) && (ev.Player.IsScp || ev.Attacker.IsScp)) 
 				ev.IsAllowed = false;
 			//if ((Check(ev.Player) && ev.Attacker.Role.Team == Team.SCPs) ||
