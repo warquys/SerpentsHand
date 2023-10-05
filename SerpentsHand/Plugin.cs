@@ -9,9 +9,9 @@ namespace SerpentsHand
     public class Plugin : Plugin<Config>
     {
         public override string Name => "Serpents Hand";
-        public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki, & Misfiy";
-        public override Version RequiredExiledVersion => new Version(8, 2, 1);
-        public override Version Version => new Version(8, 2, 4);
+        public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki & Misfiy";
+        public override Version RequiredExiledVersion => new(8, 2, 1);
+        public override Version Version => new(8, 2, 5);
 
         public static Plugin Instance;
 

@@ -55,13 +55,9 @@ namespace SerpentsHand
 
           public void OnRespawningTeam(RespawningTeamEventArgs ev)
           {
-               Timing.CallDelayed(0.25f, delegate
-               {
-                    UpdateChaosCounter();
-               });
                if (Plugin.Instance.IsSpawnable || Plugin.Instance.IsForced)
                {
-                    bool scpAlive = Player.List.Count(x => x.Role.Team == Team.SCPs) > 0;
+                    bool scpAlive = Player.List.Count(x => x.Role.Team == Team.SCPs) != 0;
                     if (!scpAlive && !Plugin.Instance.Config.SerpentsHand.CanSpawnWithoutScps)
                          return;
 
@@ -100,18 +96,11 @@ namespace SerpentsHand
                {
                     if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
                     else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
-                    else if (!plugin.Config.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
+                    else if (!plugin.Config.SerpentsHand.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
                }
           }
 
-          public void OnSpawned(SpawnedEventArgs ev)
-          {
-               UpdateChaosCounter();
-          }
-
-          private void UpdateChaosCounter()
-          {
-               RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
-          }
+          public void OnSpawned(SpawnedEventArgs ev) => 
+               RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
      }
 }
