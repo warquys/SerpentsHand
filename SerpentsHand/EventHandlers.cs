@@ -100,7 +100,10 @@ namespace SerpentsHand
 			}
 		}
 
-		public void OnSpawned(SpawnedEventArgs ev) =>
-			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+		public void OnSpawned(SpawnedEventArgs ev)
+		{
+			if(ev.Player.IsCHI || ev.OldRole.Team == Team.ChaosInsurgency)
+				RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+		}
 	}
 }
