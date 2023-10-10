@@ -18,4 +18,4 @@ Place the "SerpentsHand.dll" file in your EXILED/Plugins folder.
 * A configurable spawn location
 * Commands to spawn individual members and a squad manually
 * Announcements for a squad of Serpent's Hand spawning
-* Not compatible with [RespawnTimer](https://github.com/Michal78900/RespawnTimer)!
+* Compatible with [Misfiy's Version of RespawnTimer](https://github.com/Misfiy/RespawnTimer)!
