@@ -3,6 +3,7 @@ using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 using System;
 using Server = Exiled.Events.Handlers.Server;
+using Player = Exiled.Events.Handlers.Player;
 
 namespace SerpentsHand
 {
@@ -29,6 +30,8 @@ namespace SerpentsHand
 			Server.RoundStarted += eventHandlers.OnRoundStarted;
 			Server.RespawningTeam += eventHandlers.OnRespawningTeam;
 			Server.EndingRound += eventHandlers.OnEndingRound;
+			Player.Spawned += eventHandlers.OnSpawned;
+			
 			base.OnEnabled();
 		}
 
@@ -38,6 +41,7 @@ namespace SerpentsHand
 			Server.RoundStarted -= eventHandlers.OnRoundStarted;
 			Server.RespawningTeam -= eventHandlers.OnRespawningTeam;
 			Server.EndingRound -= eventHandlers.OnEndingRound;
+			Player.Spawned -= eventHandlers.OnSpawned;
 
 			eventHandlers = null;
 			Instance = null;

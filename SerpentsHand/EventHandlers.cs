@@ -1,5 +1,4 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Loader;
@@ -9,13 +8,14 @@ using Respawning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exiled.API.Enums;
 
 namespace SerpentsHand
 {
 	internal sealed class EventHandlers
 	{
-		private Plugin plugin;
-		public EventHandlers(Plugin plugin) => this.plugin = plugin;
+		private Plugin _plugin;
+		public EventHandlers(Plugin plugin) => _plugin = plugin;
 
 		private int Respawns = 0;
 		private int SHRespawns = 0;
@@ -31,10 +31,10 @@ namespace SerpentsHand
 			if (calcuationCoroutine.IsRunning)
 				Timing.KillCoroutines(calcuationCoroutine);
 
-			calcuationCoroutine = Timing.RunCoroutine(spawnCalculation());
+			calcuationCoroutine = Timing.RunCoroutine(SpawnCalculation());
 		}
 
-		private IEnumerator<float> spawnCalculation()
+		private IEnumerator<float> SpawnCalculation()
 		{
 			while (true)
 			{
@@ -60,12 +60,10 @@ namespace SerpentsHand
 				bool scpAlive = Player.List.Count(x => x.Role.Team == Team.SCPs) != 0;
 				if (!scpAlive && !Plugin.Instance.Config.SerpentsHand.CanSpawnWithoutScps)
 					return;
-
-				List<Player> players = new();
-				if (ev.Players.Count > Plugin.Instance.Config.SerpentsHand.MaxSquad)
-					players = ev.Players.GetRange(0, Plugin.Instance.Config.SerpentsHand.MaxSquad);
-				else
-					players = ev.Players.GetRange(0, ev.Players.Count);
+				
+				List<Player> players = ev.Players.GetRange(0, ev.Players.Count > Plugin.Instance.Config.SerpentsHand.MaxSquad 
+					? Plugin.Instance.Config.SerpentsHand.MaxSquad 
+					: ev.Players.Count);
 
 				foreach (Player player in players)
 				{
@@ -87,23 +85,26 @@ namespace SerpentsHand
 				ev.NextKnownTeam = SpawnableTeamType.None;
 			}
 
+			Timing.CallDelayed(0.25f, UpdateCounter);
+
 			Respawns++;
 		}
 
 		public void OnEndingRound(EndingRoundEventArgs ev)
 		{
-			if (plugin.Config.SerpentsHand.TrackedPlayers.Count > 0)
-			{
-				if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
-				else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
-				else if (!plugin.Config.SerpentsHand.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
-			}
+			if (_plugin.Config.SerpentsHand.TrackedPlayers.Count <= 0) return;
+			
+			if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
+			else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
+			else if (!_plugin.Config.SerpentsHand.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
 		}
 
-		public void OnSpawned(SpawnedEventArgs ev)
+		public void OnSpawned(SpawnedEventArgs ev) // CustomEscapes support :)
 		{
-			if(ev.Player.IsCHI || ev.OldRole.Team == Team.ChaosInsurgency)
-				RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+			if(ev.Player.IsCHI && ev.Reason == SpawnReason.Escaped)
+				UpdateCounter();
 		}
+		private void UpdateCounter() =>
+			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
 	}
 }
