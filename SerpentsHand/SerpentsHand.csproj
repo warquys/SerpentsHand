@@ -9,7 +9,7 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="EXILED" Version="8.3.2" />
+		<PackageReference Include="EXILED" Version="8.3.7" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp-firstpass">

@@ -17,8 +17,8 @@ namespace SerpentsHand
 		private Plugin _plugin;
 		public EventHandlers(Plugin plugin) => _plugin = plugin;
 
-		private int Respawns = 0;
-		private int SHRespawns = 0;
+		private int Respawns;
+		private int SHRespawns;
 		private CoroutineHandle calcuationCoroutine;
 
 		public void OnRoundStarted()
@@ -84,7 +84,7 @@ namespace SerpentsHand
 				ev.NextKnownTeam = SpawnableTeamType.None;
 			}
 
-			Timing.CallDelayed(0.2f, UpdateCounter);
+			UpdateCounter();
 
 			Respawns++;
 		}
