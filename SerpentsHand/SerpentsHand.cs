@@ -78,6 +78,8 @@ namespace SerpentsHand
 	   {
 		  { AmmoType.Nato9, 120 }
 	   };
+		[Description("Leave this true, as setting it false can randomly set Tutorials to Serpents Hand (which can cause plugin issues, either with this one or other plugins like SCP-035")]
+		public bool ignore_spawn_system { get; set; } = true;
 
 		protected override void SubscribeEvents()
 		{
