@@ -24,12 +24,11 @@ namespace SerpentsHand
 		public void OnRoundStarted()
 		{
 			Plugin.Instance.IsSpawnable = false;
+			Plugin.Instance.IsForced = false;
 			Respawns = 0;
 			SHRespawns = 0;
-			Plugin.Instance.IsForced = false;
 
-			if (calcuationCoroutine.IsRunning)
-				Timing.KillCoroutines(calcuationCoroutine);
+			Timing.KillCoroutines(calcuationCoroutine);
 
 			calcuationCoroutine = Timing.RunCoroutine(SpawnCalculation());
 		}
@@ -85,7 +84,7 @@ namespace SerpentsHand
 				ev.NextKnownTeam = SpawnableTeamType.None;
 			}
 
-			Timing.CallDelayed(0.25f, UpdateCounter);
+			Timing.CallDelayed(0.2f, UpdateCounter);
 
 			Respawns++;
 		}
@@ -99,9 +98,9 @@ namespace SerpentsHand
 			else if (!_plugin.Config.SerpentsHand.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
 		}
 
-		public void OnSpawned(SpawnedEventArgs ev) // CustomEscapes support :)
+		public void OnSpawned(SpawnedEventArgs ev)
 		{
-			if(ev.Player.IsCHI && ev.Reason == SpawnReason.Escaped)
+			if(ev.Player.IsCHI && ev.Reason != SpawnReason.Respawn)
 				UpdateCounter();
 		}
 		private void UpdateCounter() =>
