@@ -11,8 +11,8 @@ namespace SerpentsHand
 	{
 		public override string Name => "Serpents Hand";
 		public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki & Misfiy";
-		public override Version RequiredExiledVersion => new(8, 3, 7);
-		public override Version Version => new(8, 2, 6);
+		public override Version RequiredExiledVersion => new(8, 3, 8);
+		public override Version Version => new(8, 3, 1);
 
 		public static Plugin Instance;
 
