@@ -84,7 +84,7 @@ namespace SerpentsHand
 				ev.NextKnownTeam = SpawnableTeamType.None;
 			}
 
-			UpdateCounter();
+			Timing.CallDelayed(1, UpdateCounter);
 
 			Respawns++;
 		}
@@ -103,6 +103,7 @@ namespace SerpentsHand
 			if(ev.Player.IsCHI && ev.Reason != SpawnReason.Respawn)
 				UpdateCounter();
 		}
+		
 		private void UpdateCounter() =>
 			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
 	}
