@@ -12,6 +12,8 @@ A plugin that adds a new class to your server named "Serpent's Hand". This class
 
 Place the "SerpentsHand.dll" file in your EXILED/Plugins folder.
 
+If you have issues with tutorials still being swapped to SH, set `auto_convert_tutorial: false` and `ignore_spawn_system: true` in your config
+
 # Features
 * Uses the Tutorial model for this class
 * Class has a configrable percent chance to spawn instead of chaos
