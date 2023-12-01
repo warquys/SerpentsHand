@@ -46,9 +46,9 @@ namespace SerpentsHand
 					continue;
 
 				if (Respawn.NextKnownTeam == SpawnableTeamType.ChaosInsurgency)
-					Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SerpentsHand.SpawnChance &&
-					Respawns >= Plugin.Instance.Config.SerpentsHand.RespawnDelay &&
-					SHRespawns < Plugin.Instance.Config.SerpentsHand.MaxSpawns || Plugin.Instance.IsForced;
+					Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SpawnManager.SpawnChance &&
+					Respawns >= Plugin.Instance.Config.SpawnManager.RespawnDelay &&
+					SHRespawns < Plugin.Instance.Config.SpawnManager.MaxSpawns || Plugin.Instance.IsForced;
 			}
 		}
 
@@ -57,26 +57,42 @@ namespace SerpentsHand
 			if (Plugin.Instance.IsSpawnable || Plugin.Instance.IsForced)
 			{
 				bool scpAlive = Player.List.Count(x => x.Role.Team == Team.SCPs) != 0;
-				if (!scpAlive && !Plugin.Instance.Config.SerpentsHand.CanSpawnWithoutScps)
+				if (!scpAlive && !Plugin.Instance.Config.SpawnManager.CanSpawnWithoutScps)
 					return;
 				
-				List<Player> players = ev.Players.GetRange(0, ev.Players.Count > Plugin.Instance.Config.SerpentsHand.MaxSquad 
-					? Plugin.Instance.Config.SerpentsHand.MaxSquad 
+				List<Player> players = ev.Players.GetRange(0, ev.Players.Count > Plugin.Instance.Config.SpawnManager.MaxSquad 
+					? Plugin.Instance.Config.SpawnManager.MaxSquad 
 					: ev.Players.Count);
 
 				foreach (Player player in players)
 				{
-					if (player is null)
-						continue;
-					Plugin.Instance.Config.SerpentsHand.AddRole(player);
-				}
-				SHRespawns++;
-				if (!string.IsNullOrEmpty(Plugin.Instance.Config.SerpentsHand.EntryAnnoucement))
-					Cassie.Message(Plugin.Instance.Config.SerpentsHand.EntryAnnoucement, isSubtitles: Plugin.Instance.Config.SerpentsHand.Subtitles);
+                    int SerpentsCount = 0;
 
-				if (Plugin.Instance.Config.SerpentsHand.EntryBroadcast.Duration > 0 || !string.IsNullOrEmpty(Plugin.Instance.Config.SerpentsHand.EntryBroadcast.Content))
+                    if (player is null)
+						continue;
+
+                    if (SerpentsCount == 0)
+                    {
+                        Plugin.Instance.Config.SerpentsHandLeader.AddRole(player);
+                        SerpentsCount++;
+                    }
+                    else if (SerpentsCount >= 1 && SerpentsCount <= 3)
+                    {
+                        Plugin.Instance.Config.SerpentsHandSpecialist.AddRole(player);
+                        SerpentsCount++;
+                    }
+                    else
+                    {
+                        Plugin.Instance.Config.SerpentsHand.AddRole(player);
+                    }
+                }
+				SHRespawns++;
+				if (!string.IsNullOrEmpty(Plugin.Instance.Config.SpawnManager.EntryAnnoucement))
+					Cassie.Message(Plugin.Instance.Config.SpawnManager.EntryAnnoucement, isSubtitles: Plugin.Instance.Config.SpawnManager.Subtitles);
+
+				if (Plugin.Instance.Config.SpawnManager.EntryBroadcast.Duration > 0 || !string.IsNullOrEmpty(Plugin.Instance.Config.SpawnManager.EntryBroadcast.Content))
 					foreach (Player player in Player.List.Where(x => x.Role.Team == Team.SCPs))
-						player.Broadcast(Plugin.Instance.Config.SerpentsHand.EntryBroadcast);
+						player.Broadcast(Plugin.Instance.Config.SpawnManager.EntryBroadcast);
 
 				Plugin.Instance.IsSpawnable = false;
 				Plugin.Instance.IsForced = false;
@@ -95,7 +111,7 @@ namespace SerpentsHand
 			
 			if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
 			else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
-			else if (!_plugin.Config.SerpentsHand.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
+			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
 		}
 
 		public void OnSpawned(SpawnedEventArgs ev)
@@ -105,6 +121,6 @@ namespace SerpentsHand
 		}
 		
 		private void UpdateCounter() =>
-			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SerpentsHand.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SpawnManager.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
 	}
 }

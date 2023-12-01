@@ -4,15 +4,16 @@ using Exiled.CustomRoles.API.Features;
 using System;
 using Server = Exiled.Events.Handlers.Server;
 using Player = Exiled.Events.Handlers.Player;
+using SerpentsHand.Configs;
 
 namespace SerpentsHand
 {
-	public class Plugin : Plugin<Config>
+    public class Plugin : Plugin<Config>
 	{
 		public override string Name => "Serpents Hand";
 		public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki & Misfiy";
 		public override Version RequiredExiledVersion => new(8, 3, 8);
-		public override Version Version => new(8, 3, 2);
+		public override Version Version => new(8, 4, 0);
 
 		public static Plugin Instance;
 
