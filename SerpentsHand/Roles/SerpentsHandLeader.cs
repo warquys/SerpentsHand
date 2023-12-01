@@ -16,7 +16,7 @@ namespace SerpentsHand.Roles
     [CustomRole(RoleTypeId.Tutorial)]
     public class SerpentsHandLeader : CustomRole
     {
-        public override uint Id { get; set; } = 2;
+        public override uint Id { get; set; } = 1;
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
         public override int MaxHealth { get; set; } = 100;
         public override string Name { get; set; } = "Serpents Hand General";

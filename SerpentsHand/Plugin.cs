@@ -26,6 +26,8 @@ namespace SerpentsHand
 		{
 			Instance = this;
 			Config.SerpentsHand.Register();
+			Config.SerpentsHandSpecialist.Register();
+			Config.SerpentsHandLeader.Register();
 			eventHandlers = new EventHandlers(this);
 
 			Server.RoundStarted += eventHandlers.OnRoundStarted;
