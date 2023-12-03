@@ -15,7 +15,8 @@ namespace SerpentsHand
 	internal sealed class EventHandlers
 	{
 		private Plugin _plugin;
-		public EventHandlers(Plugin plugin) => _plugin = plugin;
+        int SerpentsCount = 0;
+        public EventHandlers(Plugin plugin) => _plugin = plugin;
 
 		private int Respawns;
 		private int SHRespawns;
@@ -63,11 +64,10 @@ namespace SerpentsHand
 				List<Player> players = ev.Players.GetRange(0, ev.Players.Count > Plugin.Instance.Config.SpawnManager.MaxSquad 
 					? Plugin.Instance.Config.SpawnManager.MaxSquad 
 					: ev.Players.Count);
+				SerpentsCount = 0;
 
 				foreach (Player player in players)
 				{
-                    int SerpentsCount = 0;
-
                     if (player is null)
 						continue;
 
