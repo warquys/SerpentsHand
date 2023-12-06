@@ -19,9 +19,10 @@ namespace SerpentsHand.Roles
         public override uint Id { get; set; } = 3;
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
         public override int MaxHealth { get; set; } = 100;
-        public override string Name { get; set; } = "Serpents Hand Acolyte";
+        public override string Name { get; set; } = "Serpents Hand Agent";
         public override string Description { get; set; } = "Help the SCPs by killing all other classes";
-        public override string CustomInfo { get; set; } = "Serpents Hand";
+        public override string CustomInfo { get; set; } = "Serpents Hand Agent";
+        public override bool IgnoreSpawnSystem { get; set; } = true;
 
         public override List<string> Inventory { get; set; } = new()
        {
