@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SerpentsHand")]
 [assembly: AssemblyDescription("EXILED [SCP:SL] Plugin that adds a new CH to the game [SCP/SH]")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("yanox, Michal78900 and Marco15453")]
+[assembly: AssemblyCompany("yanox, Michal78900 and Marco15453, Vicious Vikki & Misfiy")]
 [assembly: AssemblyProduct("SerpentsHand")]
-[assembly: AssemblyCopyright("Copyright © yanox, Michal78900 and Marco15453 2023")]
+[assembly: AssemblyCopyright("Copyright © yanox, Michal78900 and Marco15453, Vicious Vikki & Misfiy 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.3.0")]
-[assembly: AssemblyFileVersion("6.3.0")]
+[assembly: AssemblyVersion("8.4.0")]
+[assembly: AssemblyFileVersion("8.4.0")]
