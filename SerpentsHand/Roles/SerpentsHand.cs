@@ -59,7 +59,7 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting += OnShooting;
             PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
             PlayerEvent.ChangingRole += OnChangingRole;
-            PlayerEvent.ReceivingEffect += OnScp956Target;
+            PlayerEvent.ReceivingEffect += OnEffect;
 
             base.SubscribeEvents();
         }
