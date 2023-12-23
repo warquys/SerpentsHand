@@ -1,4 +1,5 @@
-﻿using Exiled.API.Enums;
+﻿using CustomPlayerEffects;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Spawn;
@@ -59,6 +60,7 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting += OnShooting;
             PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
             PlayerEvent.ChangingRole += OnChangingRole;
+            PlayerEvent.ReceivingEffect += OnEffect;
 
             base.SubscribeEvents();
         }
@@ -70,6 +72,7 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting -= OnShooting;
             PlayerEvent.ActivatingGenerator -= OnActivatingGenerator;
             PlayerEvent.ChangingRole -= OnChangingRole;
+            PlayerEvent.ReceivingEffect -= OnEffect;
 
             base.UnsubscribeEvents();
         }
@@ -85,10 +88,6 @@ namespace SerpentsHand.Roles
             if (ev.Attacker is null) return;
             if ((Check(ev.Player) || Check(ev.Attacker)) && (ev.Player.IsScp || ev.Attacker.IsScp))
                 ev.IsAllowed = false;
-            //if ((Check(ev.Player) && ev.Attacker.Role.Team == Team.SCPs) ||
-            //    (ev.Attacker != null && Check(ev.Attacker) && ev.Player.Role.Team == Team.SCPs) ||
-            //    (ev.Attacker != null && Check(ev.Attacker) && Check(ev.Player) && ev.Player != ev.Attacker))
-            //	ev.IsAllowed = false;
         }
 
         private void OnShooting(ShootingEventArgs ev)
@@ -108,6 +107,13 @@ namespace SerpentsHand.Roles
         {
             if (Plugin.Instance.Config.SpawnManager.AutoConvertTutorial && ev.NewRole == Role && !ev.Player.IsOverwatchEnabled && !Check(ev.Player))
                 AddRole(ev.Player);
+        }
+        private void OnEffect(ReceivingEffectEventArgs ev)
+        {
+            if (ev.Effect is Scp956Target)
+                ev.IsAllowed = false;
+            if (ev.Effect is BecomingFlamingo)
+                ev.IsAllowed = false;
         }
     }
 }
