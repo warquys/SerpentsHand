@@ -112,8 +112,6 @@ namespace SerpentsHand.Roles
         {
             if (ev.Effect is Scp956Target)
                 ev.IsAllowed = false;
-            if (ev.Effect is BecomingFlamingo)
-                ev.IsAllowed = false;
         }
     }
 }
