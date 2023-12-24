@@ -60,7 +60,6 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting += OnShooting;
             PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
             PlayerEvent.ChangingRole += OnChangingRole;
-            PlayerEvent.ReceivingEffect += OnEffect;
 
             base.SubscribeEvents();
         }
@@ -72,7 +71,6 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting -= OnShooting;
             PlayerEvent.ActivatingGenerator -= OnActivatingGenerator;
             PlayerEvent.ChangingRole -= OnChangingRole;
-            PlayerEvent.ReceivingEffect -= OnEffect;
 
             base.UnsubscribeEvents();
         }
@@ -107,11 +105,6 @@ namespace SerpentsHand.Roles
         {
             if (Plugin.Instance.Config.SpawnManager.AutoConvertTutorial && ev.NewRole == Role && !ev.Player.IsOverwatchEnabled && !Check(ev.Player))
                 AddRole(ev.Player);
-        }
-        private void OnEffect(ReceivingEffectEventArgs ev)
-        {
-            if (ev.Effect is Scp956Target)
-                ev.IsAllowed = false;
         }
     }
 }

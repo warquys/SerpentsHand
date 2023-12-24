@@ -59,7 +59,6 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting += OnShooting;
             PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
             PlayerEvent.ChangingRole += OnChangingRole;
-            PlayerEvent.ReceivingEffect += OnEffect;
 
             base.SubscribeEvents();
         }
@@ -71,7 +70,6 @@ namespace SerpentsHand.Roles
             PlayerEvent.Shooting -= OnShooting;
             PlayerEvent.ActivatingGenerator -= OnActivatingGenerator;
             PlayerEvent.ChangingRole -= OnChangingRole;
-            PlayerEvent.ReceivingEffect -= OnEffect;
 
             base.UnsubscribeEvents();
         }
