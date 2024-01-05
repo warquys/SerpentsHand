@@ -88,7 +88,7 @@ namespace SerpentsHand
                 }
 				SHRespawns++;
 				if (!string.IsNullOrEmpty(Plugin.Instance.Config.SpawnManager.EntryAnnoucement))
-					Cassie.Message(Plugin.Instance.Config.SpawnManager.EntryAnnoucement, isSubtitles: Plugin.Instance.Config.SpawnManager.Subtitles);
+					Cassie.MessageTranslated(Plugin.Instance.Config.SpawnManager.EntryAnnoucement, Plugin.Instance.Config.SpawnManager.CassieText, isSubtitles: Plugin.Instance.Config.SpawnManager.Subtitles);
 
 				if (Plugin.Instance.Config.SpawnManager.EntryBroadcast.Duration > 0 || !string.IsNullOrEmpty(Plugin.Instance.Config.SpawnManager.EntryBroadcast.Content))
 					foreach (Player player in Player.List.Where(x => x.Role.Team == Team.SCPs))
