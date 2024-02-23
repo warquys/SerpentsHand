@@ -20,4 +20,4 @@ If you have issues with tutorials still being swapped to SH, set `auto_convert_t
 * A configurable spawn location
 * Commands to spawn individual members and a squad manually (individual members you need the give custom role permission, a squad you will need the RoundEvents permission)
 * Announcements for a squad of Serpent's Hand spawning
-* Compatible with [Misfiy's Version of RespawnTimer](https://github.com/Misfiy/RespawnTimer)!
+* Compatible with [RespawnTimer](https://github.com/Michal78900/RespawnTimer)!
