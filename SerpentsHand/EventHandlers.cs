@@ -19,7 +19,6 @@ namespace SerpentsHand
 
 		private int Respawns;
 		private int SHRespawns;
-		private int SerpentsCount = 0;
         private CoroutineHandle calcuationCoroutine;
 
 		public void OnRoundStarted()
@@ -73,19 +72,16 @@ namespace SerpentsHand
                     if (SerpentsSpawnCount == 0)
                     {
                         Plugin.Instance.Config.SerpentsHandLeader.AddRole(player);
-                        SerpentsCount++;
 						SerpentsSpawnCount++;
                     }
                     else if (SerpentsSpawnCount >= 1 && SerpentsSpawnCount <= 3)
                     {
                         Plugin.Instance.Config.SerpentsHandSpecialist.AddRole(player);
-                        SerpentsCount++;
 						SerpentsSpawnCount++;
                     }
                     else
                     {
                         Plugin.Instance.Config.SerpentsHand.AddRole(player);
-						SerpentsCount++;
                     }
                 }
 				SHRespawns++;
