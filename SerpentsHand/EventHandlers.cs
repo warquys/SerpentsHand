@@ -15,12 +15,12 @@ namespace SerpentsHand
 	internal sealed class EventHandlers
 	{
 		private Plugin _plugin;
-        int SerpentsCount = 0;
         public EventHandlers(Plugin plugin) => _plugin = plugin;
 
 		private int Respawns;
 		private int SHRespawns;
-		private CoroutineHandle calcuationCoroutine;
+		private int SerpentsCount = 0;
+        private CoroutineHandle calcuationCoroutine;
 
 		public void OnRoundStarted()
 		{
@@ -64,26 +64,28 @@ namespace SerpentsHand
 				List<Player> players = ev.Players.GetRange(0, ev.Players.Count > Plugin.Instance.Config.SpawnManager.MaxSquad 
 					? Plugin.Instance.Config.SpawnManager.MaxSquad 
 					: ev.Players.Count);
-				SerpentsCount = 0;
-
+				int SerpentsSpawnCount = 0;
 				foreach (Player player in players)
 				{
                     if (player is null)
 						continue;
 
-                    if (SerpentsCount == 0)
+                    if (SerpentsSpawnCount == 0)
                     {
                         Plugin.Instance.Config.SerpentsHandLeader.AddRole(player);
                         SerpentsCount++;
+						SerpentsSpawnCount++;
                     }
-                    else if (SerpentsCount >= 1 && SerpentsCount <= 3)
+                    else if (SerpentsSpawnCount >= 1 && SerpentsSpawnCount <= 3)
                     {
                         Plugin.Instance.Config.SerpentsHandSpecialist.AddRole(player);
                         SerpentsCount++;
+						SerpentsSpawnCount++;
                     }
                     else
                     {
                         Plugin.Instance.Config.SerpentsHand.AddRole(player);
+						SerpentsCount++;
                     }
                 }
 				SHRespawns++;
@@ -107,7 +109,7 @@ namespace SerpentsHand
 
 		public void OnEndingRound(EndingRoundEventArgs ev)
 		{
-			if (_plugin.Config.SerpentsHand.TrackedPlayers.Count <= 0) return;
+			if (_plugin.Config.SerpentsHand.TrackedPlayers.Count + _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count + _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count <= 0) return;
 			
 			if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
 			else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
@@ -119,7 +121,7 @@ namespace SerpentsHand
 			if(ev.Player.IsCHI && ev.Reason != SpawnReason.Respawn)
 				UpdateCounter();
 		}
-		
+
 		private void UpdateCounter() =>
 			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SpawnManager.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
 	}
