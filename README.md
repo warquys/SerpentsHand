@@ -4,7 +4,7 @@ A plugin that adds a new class to your server named "Serpent's Hand". This class
 
 # Installation
 
-**[EXILED](https://github.com/galaxy119/EXILED) must be installed for this to work.**
+**[EXILED](https://github.com/ExMod-Team/EXILED) must be installed for this to work.**
 
 **CustomRoles need to be enabled on your server for this to work.**
 
