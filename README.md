@@ -1,5 +1,7 @@
 # SerpentsHand
 
+![Downloads](https://img.shields.io/github/downloads/SnivyFilms/SerpentsHand/total.svg)
+
 A plugin that adds a new class to your server named "Serpent's Hand". This class works with the SCPs to eliminate all other beings. They have a chance to spawn instead of a squad of Chaos Insurgency.
 
 # Installation
