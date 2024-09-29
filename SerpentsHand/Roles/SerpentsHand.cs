@@ -90,7 +90,7 @@ namespace SerpentsHand.Roles
         private void OnShooting(ShootingEventArgs ev)
         {
             Player target = Player.Get(ev.TargetNetId);
-            if (target != null && target.Role == RoleTypeId.Scp096 && Check(ev.Player))
+            if (target != null && target.IsScp && Check(ev.Player))
                 ev.IsAllowed = false;
         }
 
