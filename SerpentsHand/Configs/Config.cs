@@ -11,7 +11,7 @@ namespace SerpentsHand.Configs
         [Description("Whether or not debug messages will be shown")]
         public bool Debug { get; set; } = false;
 
-        [Description("How many seconds before a spawnwave occurs should it calculate the spawn chance")]
+        [Description("How many seconds before a spawnwave occurs should it calculate the spawn chance. This value **MUST** be lower than 13")]
         public int SpawnWaveCalculation { get; set; } = 10;
 
         public Roles.SerpentsHand SerpentsHand { get; set; } = new();
