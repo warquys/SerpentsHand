@@ -57,7 +57,7 @@ namespace SerpentsHand.Roles
         {
             PlayerEvent.EnteringPocketDimension += OnEnteringPocketDimension;
             PlayerEvent.Hurting += OnHurting;
-            PlayerEvent.Shooting += OnShooting;
+            PlayerEvent.Shot += OnShot;
             PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
             PlayerEvent.ChangingRole += OnChangingRole;
 
@@ -68,7 +68,7 @@ namespace SerpentsHand.Roles
         {
             PlayerEvent.EnteringPocketDimension -= OnEnteringPocketDimension;
             PlayerEvent.Hurting -= OnHurting;
-            PlayerEvent.Shooting -= OnShooting;
+            PlayerEvent.Shot -= OnShot;
             PlayerEvent.ActivatingGenerator -= OnActivatingGenerator;
             PlayerEvent.ChangingRole -= OnChangingRole;
 
@@ -88,11 +88,10 @@ namespace SerpentsHand.Roles
                 ev.IsAllowed = false;
         }
 
-        private void OnShooting(ShootingEventArgs ev)
+        private void OnShot(ShotEventArgs ev)
         {
-            Player target = Player.Get(ev.TargetNetId);
-            if (target != null && target.IsScp && Check(ev.Player))
-                ev.IsAllowed = false;
+            if (ev.Target != null && ev.Target.IsScp && Check(ev.Player))
+                ev.CanHurt = false;
         }
 
         private void OnActivatingGenerator(ActivatingGeneratorEventArgs ev)

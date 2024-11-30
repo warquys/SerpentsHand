@@ -42,8 +42,8 @@ namespace SerpentsHand
 				if (Round.IsEnded)
 					break;
 
-				if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != Plugin.Instance.Config.SpawnWaveCalculation)
-					continue;
+				//if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != Plugin.Instance.Config.SpawnWaveCalculation)
+				//	continue;
 
 				if (Respawn.NextKnownTeam == SpawnableTeamType.ChaosInsurgency)
 					Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SpawnManager.SpawnChance &&
@@ -95,7 +95,7 @@ namespace SerpentsHand
 				Plugin.Instance.IsSpawnable = false;
 				Plugin.Instance.IsForced = false;
 				ev.IsAllowed = false;
-				ev.NextKnownTeam = SpawnableTeamType.None;
+				//ev.NextKnownTeam = SpawnableTeamType.None;
 			}
 
 			Timing.CallDelayed(1, UpdateCounter);
@@ -119,6 +119,6 @@ namespace SerpentsHand
 		}
 
 		private void UpdateCounter() =>
-			RoundSummary.singleton.ChaosTargetCount = Plugin.Instance.Config.SpawnManager.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+			RoundSummary.singleton.ExtraTargets = Plugin.Instance.Config.SpawnManager.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
 	}
 }
