@@ -45,7 +45,7 @@ namespace SerpentsHand
 				//if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != Plugin.Instance.Config.SpawnWaveCalculation)
 				//	continue;
 
-				if (Respawn.NextKnownTeam == SpawnableTeamType.ChaosInsurgency)
+				if (Respawn.NextKnownSpawnableFaction == SpawnableFaction.ChaosMiniWave || Respawn.NextKnownSpawnableFaction == SpawnableFaction.ChaosWave)
 					Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SpawnManager.SpawnChance &&
 					Respawns >= Plugin.Instance.Config.SpawnManager.RespawnDelay &&
 					SHRespawns < Plugin.Instance.Config.SpawnManager.MaxSpawns || Plugin.Instance.IsForced;
@@ -107,9 +107,9 @@ namespace SerpentsHand
 		{
 			if (_plugin.Config.SerpentsHand.TrackedPlayers.Count + _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count + _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count <= 0) return;
 			
-			if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsRoundEnded = false;
-			else if (ev.ClassList.class_ds != 0) ev.IsRoundEnded = false;
-			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsRoundEnded = false;
+			if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsAllowed = false;
+			else if (ev.ClassList.class_ds != 0) ev.IsAllowed = false;
+			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsAllowed = false;
 		}
 
 		public void OnSpawned(SpawnedEventArgs ev)
