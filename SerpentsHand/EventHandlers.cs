@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Enums;
+using Exiled.Events.EventArgs.Map;
 
 namespace SerpentsHand
 {
@@ -51,7 +52,13 @@ namespace SerpentsHand
 					SHRespawns < Plugin.Instance.Config.SpawnManager.MaxSpawns || Plugin.Instance.IsForced;
 			}
 		}
-
+		public void OnAnnouncingChaosEntrance(AnnouncingChaosEntranceEventArgs ev)
+		{
+			if (Plugin.Instance.IsSpawnable)
+				ev.IsAllowed = false;
+			if (Plugin.Instance.Config.BlockChaosCassie)
+				ev.IsAllowed = false;
+		}
 		public void OnRespawningTeam(RespawningTeamEventArgs ev)
 		{
 			if (Plugin.Instance.IsSpawnable || Plugin.Instance.IsForced)

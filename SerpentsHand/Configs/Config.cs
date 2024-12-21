@@ -11,6 +11,9 @@ namespace SerpentsHand.Configs
         [Description("Whether or not debug messages will be shown")]
         public bool Debug { get; set; } = false;
 
+        [Description("Whether or not to block Chaos Entry Announcements")]
+        public bool BlockChaosCassie { get; set; } = true;
+
         [Description("How many seconds before a spawnwave occurs should it calculate the spawn chance. This value **MUST** be lower than 13")]
         public int SpawnWaveCalculation { get; set; } = 10;
 

@@ -2,6 +2,7 @@
 using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 using System;
+using Map = Exiled.Events.Handlers.Map;
 using Server = Exiled.Events.Handlers.Server;
 using Player = Exiled.Events.Handlers.Player;
 using SerpentsHand.Configs;
@@ -12,8 +13,8 @@ namespace SerpentsHand
 	{
 		public override string Name => "Serpents Hand";
 		public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki & Misfiy";
-		public override Version RequiredExiledVersion => new(9, 0, 0,3);
-		public override Version Version => new(9, 0, 0);
+		public override Version RequiredExiledVersion => new(9, 0, 0);
+		public override Version Version => new(9, 0, 1);
 
 		public static Plugin Instance;
 
@@ -33,6 +34,7 @@ namespace SerpentsHand
 			Server.RoundStarted += eventHandlers.OnRoundStarted;
 			Server.RespawningTeam += eventHandlers.OnRespawningTeam;
 			Server.EndingRound += eventHandlers.OnEndingRound;
+			Map.AnnouncingChaosEntrance += eventHandlers.OnAnnouncingChaosEntrance;
 			Player.Spawned += eventHandlers.OnSpawned;
 			
 			base.OnEnabled();
@@ -44,6 +46,7 @@ namespace SerpentsHand
 			Server.RoundStarted -= eventHandlers.OnRoundStarted;
 			Server.RespawningTeam -= eventHandlers.OnRespawningTeam;
 			Server.EndingRound -= eventHandlers.OnEndingRound;
+			Map.AnnouncingChaosEntrance -= eventHandlers.OnAnnouncingChaosEntrance;
 			Player.Spawned -= eventHandlers.OnSpawned;
 
 			eventHandlers = null;
