@@ -105,7 +105,7 @@ namespace SerpentsHand
 				//ev.NextKnownTeam = SpawnableTeamType.None;
 			}
 
-			Timing.CallDelayed(1, UpdateCounter);
+			//Timing.CallDelayed(1 /*, UpdateCounter*/);
 
 			Respawns++;
 		}
@@ -116,16 +116,19 @@ namespace SerpentsHand
 			
 			if (ev.ClassList.mtf_and_guards != 0 || ev.ClassList.scientists != 0) ev.IsAllowed = false;
 			else if (ev.ClassList.class_ds != 0) ev.IsAllowed = false;
-			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0) ev.IsAllowed = false;
+			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0)
+			{
+				ev.IsAllowed = ev.ClassList is { mtf_and_guards: 0, scientists: 0, scps_except_zombies: 0, zombies: 0};
+			}
 		}
 
-		public void OnSpawned(SpawnedEventArgs ev)
+		/*public void OnSpawned(SpawnedEventArgs ev)
 		{
 			if(ev.Player.IsCHI && ev.Reason != SpawnReason.Respawn)
 				UpdateCounter();
 		}
 
 		private void UpdateCounter() =>
-			RoundSummary.singleton.ExtraTargets = Plugin.Instance.Config.SpawnManager.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);
+			RoundSummary.singleton.ExtraTargets = Plugin.Instance.Config.SpawnManager.ScpsWinWithChaos ? 0 : Player.List.Count(p => p.IsCHI);*/
 	}
 }

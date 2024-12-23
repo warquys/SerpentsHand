@@ -13,8 +13,8 @@ namespace SerpentsHand
 	{
 		public override string Name => "Serpents Hand";
 		public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki & Misfiy";
-		public override Version RequiredExiledVersion => new(9, 0, 0);
-		public override Version Version => new(9, 0, 1);
+		public override Version RequiredExiledVersion => new(9, 0, 1);
+		public override Version Version => new(9, 0, 2);
 
 		public static Plugin Instance;
 
@@ -35,7 +35,7 @@ namespace SerpentsHand
 			Server.RespawningTeam += eventHandlers.OnRespawningTeam;
 			Server.EndingRound += eventHandlers.OnEndingRound;
 			Map.AnnouncingChaosEntrance += eventHandlers.OnAnnouncingChaosEntrance;
-			Player.Spawned += eventHandlers.OnSpawned;
+			//Player.Spawned += eventHandlers.OnSpawned;
 			
 			base.OnEnabled();
 		}
@@ -47,7 +47,7 @@ namespace SerpentsHand
 			Server.RespawningTeam -= eventHandlers.OnRespawningTeam;
 			Server.EndingRound -= eventHandlers.OnEndingRound;
 			Map.AnnouncingChaosEntrance -= eventHandlers.OnAnnouncingChaosEntrance;
-			Player.Spawned -= eventHandlers.OnSpawned;
+			//Player.Spawned -= eventHandlers.OnSpawned;
 
 			eventHandlers = null;
 			Instance = null;
