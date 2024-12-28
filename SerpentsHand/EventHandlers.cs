@@ -109,7 +109,7 @@ namespace SerpentsHand
 			//Timing.CallDelayed(1 /*, UpdateCounter*/);
 
 			if (!Plugin.Instance.Config.SpawnManager.ConsumeCiSpawnWave)
-				Respawn.GrantTokens(Faction.FoundationEnemy, 30);
+				Respawn.GrantTokens(Faction.FoundationEnemy, 1);
 
 			Respawns++;
 		}
