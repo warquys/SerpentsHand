@@ -104,13 +104,13 @@ namespace SerpentsHand
 				Plugin.Instance.IsForced = false;
 				ev.IsAllowed = false;
 				//ev.NextKnownTeam = SpawnableTeamType.None;
+				
+				if (!Plugin.Instance.Config.SpawnManager.ConsumeCiSpawnWave)
+					Respawn.GrantTokens(Faction.FoundationEnemy, 1);
 			}
 
 			//Timing.CallDelayed(1 /*, UpdateCounter*/);
-
-			if (!Plugin.Instance.Config.SpawnManager.ConsumeCiSpawnWave)
-				Respawn.GrantTokens(Faction.FoundationEnemy, 1);
-
+			
 			Respawns++;
 		}
 
