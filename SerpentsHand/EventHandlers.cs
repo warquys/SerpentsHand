@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Map;
+using Respawning.Waves;
 
 namespace SerpentsHand
 {
@@ -106,6 +107,9 @@ namespace SerpentsHand
 			}
 
 			//Timing.CallDelayed(1 /*, UpdateCounter*/);
+
+			if (!Plugin.Instance.Config.SpawnManager.ConsumeCiSpawnWave)
+				Respawn.GrantTokens(Faction.FoundationEnemy, 30);
 
 			Respawns++;
 		}
