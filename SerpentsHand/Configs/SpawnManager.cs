@@ -38,5 +38,8 @@ namespace SerpentsHand.Configs
         [Description(
             "Consume a CI Spawn Wave? (False means the CI will be given a refund so they can spawn once after SH spawns)")]
         public bool ConsumeCiSpawnWave { get; set; } = false;
+        
+        [Description("Can SH Spawn during a Mini-CI Wave?")]
+        public bool ShSpawnsDuringMiniWave { get; set; } = false;
     }
 }
