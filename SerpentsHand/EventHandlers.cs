@@ -47,6 +47,9 @@ namespace SerpentsHand
 				//if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != Plugin.Instance.Config.SpawnWaveCalculation)
 				//	continue;
 
+				if (Respawn.IsSpawning)
+					continue;
+
 				if (Respawn.NextKnownSpawnableFaction == SpawnableFaction.ChaosMiniWave &&
 				    Plugin.Instance.Config.SpawnManager.ShSpawnsDuringMiniWave)
 				{
