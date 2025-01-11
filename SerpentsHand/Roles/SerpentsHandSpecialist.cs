@@ -9,7 +9,7 @@ using Exiled.Events.EventArgs.Server;
 using PlayerRoles;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using MEC;
 using PlayerEvent = Exiled.Events.Handlers.Player;
 
 namespace SerpentsHand.Roles
@@ -54,13 +54,16 @@ namespace SerpentsHand.Roles
 
         protected override void SubscribeEvents()
         {
-            PlayerEvent.EnteringPocketDimension += OnEnteringPocketDimension;
-            PlayerEvent.Hurting += OnHurting;
-            PlayerEvent.Shot += OnShot;
-            PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
-            PlayerEvent.ChangingRole += OnChangingRole;
+            Timing.CallDelayed(1f, () =>
+            {
+                PlayerEvent.EnteringPocketDimension += OnEnteringPocketDimension;
+                PlayerEvent.Hurting += OnHurting;
+                PlayerEvent.Shot += OnShot;
+                PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
+                PlayerEvent.ChangingRole += OnChangingRole;
 
-            base.SubscribeEvents();
+                base.SubscribeEvents();
+            });
         }
 
         protected override void UnsubscribeEvents()
