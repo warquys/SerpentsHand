@@ -86,14 +86,23 @@ namespace SerpentsHand.Roles
 
         private void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker is null) return;
-            if ((Check(ev.Player) || Check(ev.Attacker)) && (ev.Player.IsScp || ev.Attacker.IsScp))
+            if (ev.Attacker is null) 
+                return;
+            //if ((Check(ev.Player) || Check(ev.Attacker)) && (ev.Player.IsScp || ev.Attacker.IsScp))
+            //    ev.IsAllowed = false;
+            if (Check(ev.Player) && ev.Attacker.IsScp || (Check(ev.Attacker) && ev.Player.IsScp))
                 ev.IsAllowed = false;
         }
 
         private void OnShot(ShotEventArgs ev)
         {
-            if (ev.Target != null && ev.Target.IsScp && Check(ev.Player))
+            //if (Check(ev.Player) && ev.Target != null && ev.Target.IsScp)
+            if (Check(ev.Player) && ev.Target != null && (ev.Target.Role == RoleTypeId.Scp049 || 
+                                                          ev.Target.Role == RoleTypeId.Scp096 || 
+                                                          ev.Target.Role == RoleTypeId.Scp106 || 
+                                                          ev.Target.Role == RoleTypeId.Scp173 || 
+                                                          ev.Target.Role == RoleTypeId.Scp0492 || 
+                                                          ev.Target.Role == RoleTypeId.Scp939))
                 ev.CanHurt = false;
         }
 
