@@ -125,54 +125,29 @@ namespace SerpentsHand
 
 		public void OnEndingRound(EndingRoundEventArgs ev)
 		{
-			/*IEnumerable<Side> aliveSides = Round.AliveSides;
-			if (aliveSides.Contains(Side.Mtf) && _plugin.Config.SerpentsHand.TrackedPlayers.Count +
-			    _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count +
-			    _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count > 0)
-				ev.IsAllowed = false;
-			else if (aliveSides.Contains(Side.ChaosInsurgency) && _plugin.Config.SerpentsHand.TrackedPlayers.Count +
-			            _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count +
-			            _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count > 0)
-				ev.IsAllowed = false;*/
-
 			int serpentsHandCount = _plugin.Config.SerpentsHand.TrackedPlayers.Count +
 			                        _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count +
 			                        _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count;
 
-			//if (serpentsHandCount <= 0)
-			//	return;
+			if (serpentsHandCount <= 0)
+				return;
 
 			bool mtfOrScientistsAlive = ev.ClassList.mtf_and_guards > 0 || ev.ClassList.scientists > 0;
-			bool classDAlive = ev.ClassList.class_ds > 0;
+			bool ciOrClassDAlive = ev.ClassList.class_ds > 0;
 			bool serpentsHandAlive = serpentsHandCount > 0;
 
 			if (mtfOrScientistsAlive && serpentsHandAlive)
 			{
 				ev.IsAllowed = false;
 			}
-			else if (classDAlive && serpentsHandAlive)
+			else if (ciOrClassDAlive && serpentsHandAlive)
 			{
 				ev.IsAllowed = false;
-			}
-			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0)
-			{
-				ev.IsAllowed = ev.ClassList is { mtf_and_guards: 0, scientists: 0, scps_except_zombies: 0, zombies: 0 };
 			}
 			else
 			{
 				ev.IsAllowed = true;
 			}
-			/*else if (ev.ClassList.class_ds != 0 &&
-			         _plugin.Config.SerpentsHand.TrackedPlayers.Count +
-				         _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count +
-				         _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count > 0)
-			{
-				ev.IsAllowed = false;
-			}
-			else if (!_plugin.Config.SpawnManager.ScpsWinWithChaos && ev.ClassList.chaos_insurgents != 0)
-			{
-				ev.IsAllowed = ev.ClassList is { mtf_and_guards: 0, scientists: 0, scps_except_zombies: 0, zombies: 0 };
-			}*/
 		}
 
 		/*public void OnSpawned(SpawnedEventArgs ev)
