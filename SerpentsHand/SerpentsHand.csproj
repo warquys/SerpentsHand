@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AssemblyName>SerpentsHand</AssemblyName>
+		<Product>Serpents Hand</Product>
+		<Authors>Yanox, Michal78900, Marco15453, Vicious Vikki and Misfiy</Authors>
+		<Version>9.1.0</Version>
+		<Description>Add a new wave and roles ally to SCP.</Description>
+		<DebugType>embedded</DebugType>
+
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<TargetFramework>net48</TargetFramework>
 	</PropertyGroup>
@@ -36,5 +42,8 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="ExMod.Exiled" Version="9.5.1" />
+	  <PackageReference Include="Lib.Harmony" Version="2.3.5" />
 	</ItemGroup>
+
+	<Import Project="global.props" />
 </Project>

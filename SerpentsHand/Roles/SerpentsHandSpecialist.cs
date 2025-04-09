@@ -15,7 +15,7 @@ using PlayerEvent = Exiled.Events.Handlers.Player;
 namespace SerpentsHand.Roles
 {
     [CustomRole(RoleTypeId.Tutorial)]
-    public class SerpentsHandSpecialist : CustomRole
+    public sealed class SerpentsHandSpecialist : CustomRole
     {
         public override uint Id { get; set; } = 2;
         public override RoleTypeId Role { get; set; } = RoleTypeId.Tutorial;
@@ -59,8 +59,6 @@ namespace SerpentsHand.Roles
                 PlayerEvent.EnteringPocketDimension += OnEnteringPocketDimension;
                 PlayerEvent.Hurting += OnHurting;
                 PlayerEvent.Shot += OnShot;
-                PlayerEvent.ActivatingGenerator += OnActivatingGenerator;
-                PlayerEvent.ChangingRole += OnChangingRole;
 
                 base.SubscribeEvents();
             });
@@ -71,8 +69,6 @@ namespace SerpentsHand.Roles
             PlayerEvent.EnteringPocketDimension -= OnEnteringPocketDimension;
             PlayerEvent.Hurting -= OnHurting;
             PlayerEvent.Shot -= OnShot;
-            PlayerEvent.ActivatingGenerator -= OnActivatingGenerator;
-            PlayerEvent.ChangingRole -= OnChangingRole;
 
             base.UnsubscribeEvents();
         }
@@ -103,18 +99,6 @@ namespace SerpentsHand.Roles
                                                           ev.Target.Role == RoleTypeId.Scp0492 || 
                                                           ev.Target.Role == RoleTypeId.Scp939))
                 ev.CanHurt = false;
-        }
-
-        private void OnActivatingGenerator(ActivatingGeneratorEventArgs ev)
-        {
-            if (Check(ev.Player))
-                ev.IsAllowed = false;
-        }
-
-        private void OnChangingRole(ChangingRoleEventArgs ev)
-        {
-            if (Plugin.Instance.Config.SpawnManager.AutoConvertTutorial && ev.NewRole == Role && !ev.Player.IsOverwatchEnabled && !Check(ev.Player))
-                AddRole(ev.Player);
         }
     }
 }

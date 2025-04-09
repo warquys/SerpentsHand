@@ -1,57 +1,81 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
 using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
-using System;
-using Map = Exiled.Events.Handlers.Map;
-using Server = Exiled.Events.Handlers.Server;
-using Player = Exiled.Events.Handlers.Player;
+using JetBrains.Annotations;
+using PlayerRoles;
+using Respawning;
+using Respawning.Objectives;
+using Respawning.Waves;
 using SerpentsHand.Configs;
+using SerpentsHand.Objective;
+using SerpentsHand.Wave;
 
 namespace SerpentsHand
 {
-    public class Plugin : Plugin<Config>
+    public sealed class Plugin : Plugin<Config>
 	{
-		public override string Name => "Serpents Hand";
-		public override string Author => "yanox, Michal78900, Marco15453, Vicious Vikki & Misfiy";
+        public Harmony Harmony { get; private set; }
+
+        #region Plugin Info
+        public override string Name => PluginInfo.PLUGIN_NAME;
+		public override string Author => PluginInfo.PLUGIN_AUTHORS;
 		public override Version RequiredExiledVersion => new(9, 5, 1);
-		public override Version Version => new(9, 0, 7);
+		public override Version Version => new (PluginInfo.PLUGIN_VERSION);
+        public override string Prefix { get; } = PluginInfo.PLUGIN_GUID.ToSnakeCase();
+        #endregion
 
-		public static Plugin Instance;
-
-		public bool IsSpawnable = false;
-		public bool IsForced = false;
-
+        public static Plugin Instance;
 		private EventHandlers eventHandlers;
 
-		public override void OnEnabled()
-		{
+        public Plugin()
+        {
 			Instance = this;
-			Config.SerpentsHand.Register();
+            Harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+        }
+
+        public override void OnEnabled()
+		{
+            Harmony.PatchAll();
+            Config.SerpentsHandSolder.Register();
 			Config.SerpentsHandSpecialist.Register();
 			Config.SerpentsHandLeader.Register();
 			eventHandlers = new EventHandlers(this);
-
-			Server.RoundStarted += eventHandlers.OnRoundStarted;
-			Server.RespawningTeam += eventHandlers.OnRespawningTeam;
-			Server.EndingRound += eventHandlers.OnEndingRound;
-			Map.AnnouncingChaosEntrance += eventHandlers.OnAnnouncingChaosEntrance;
-			//Player.Spawned += eventHandlers.OnSpawned;
-			
-			base.OnEnabled();
+			eventHandlers.Enable();
+            FactionInfluenceManager.Objectives.Add(new ScpKillObjective());
+            WaveManager.Waves.Add(new SerpentsHandWave());
+            // Set the Milestones is really importent else the client get a global error
+            // Why idk, verry funny no server error, just the client get a global error.
+            // No client trace, just global error 😂😂
+            RespawnTokensManager.Milestones[Faction.SCP] = RespawnTokensManager.DefaultMilestone;
+            // DO NOT ASK ME WHY
+            // This property get set only once and is decremented the rest of the time
+            // Is it a bug ? ¯\_(ツ)_/¯
+            RespawnTokensManager.AvailableRespawnsLeft += 1; 
+            base.OnEnabled();
 		}
 
 		public override void OnDisabled()
 		{
-			CustomRole.UnregisterRoles();
-			Server.RoundStarted -= eventHandlers.OnRoundStarted;
-			Server.RespawningTeam -= eventHandlers.OnRespawningTeam;
-			Server.EndingRound -= eventHandlers.OnEndingRound;
-			Map.AnnouncingChaosEntrance -= eventHandlers.OnAnnouncingChaosEntrance;
-			//Player.Spawned -= eventHandlers.OnSpawned;
-
-			eventHandlers = null;
-			Instance = null;
-			base.OnDisabled();
+            Harmony.UnpatchAll(Harmony.Id);
+            CustomRole.UnregisterRoles(
+                [// BRUH the old version was just removing every custom roles of all plugins
+                    Config.SerpentsHandSolder, 
+                    Config.SerpentsHandSpecialist, 
+                    Config.SerpentsHandLeader
+                ]);
+			eventHandlers.Disable();
+            WaveManager.Waves.RemoveAll(p => p is SerpentsHandWave);
+            FactionInfluenceManager.Objectives.RemoveAll(p => p is ScpKillObjective);
+            base.OnDisabled();
 		}
+
+        public bool IsSerpentsHand(Player player)
+        {
+            // YOUPI the player have no idea if it as a custom role
+            // WHY NOT JUST SAY THAT PLAYER CONTAIN A SPECIFIC FIELD FOR ROLE ID
+            return Config.SerpentsHandSolder.Check(player)
+                || Config.SerpentsHandSpecialist.Check(player)
+                || Config.SerpentsHandLeader.Check(player);
+        }
 	}
 }

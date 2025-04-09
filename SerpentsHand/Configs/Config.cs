@@ -1,5 +1,5 @@
-﻿using Exiled.API.Interfaces;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Respawning;
 
 namespace SerpentsHand.Configs
 {
@@ -11,15 +11,22 @@ namespace SerpentsHand.Configs
         [Description("Whether or not debug messages will be shown")]
         public bool Debug { get; set; } = false;
 
-        [Description("Whether or not to block Chaos Entry Announcements")]
-        public bool BlockChaosCassie { get; set; } = true;
+        [Description("The message annouced by CASSIE when Serpents hand spawn. (Empty = Disabled)")]
+        public string EntryAnnouncement { get; set; } = "SERPENTS HAND HASENTERED";
 
-        [Description("How many seconds before a spawnwave occurs should it calculate the spawn chance. This value **MUST** be lower than 13")]
-        public int SpawnWaveCalculation { get; set; } = 10;
-        
+        [Description("The CASSIE text that is shown to the player, Subtitles must be set to true")]
+        public string EntryAnnouncementTranslation { get; set; } = "Serpents Hand has entered the facility";
+
+        [Description("The broadcast shown to SCPs when the Serpents Hand respawns.")]
+        public Exiled.API.Features.Broadcast EntryBroadcast { get; set; } = new Exiled.API.Features.Broadcast("<color=orange>Serpents Hand has entered the facility!</color>");
+
         public Roles.SerpentsHandLeader SerpentsHandLeader { get; set;} = new();
         public Roles.SerpentsHandSpecialist SerpentsHandSpecialist { get; set; } = new();
-        public Roles.SerpentsHand SerpentsHand { get; set; } = new();
-        public Configs.SpawnManager SpawnManager { get; set; } = new();
+        public Roles.SerpentsHandSolder SerpentsHandSolder { get; set; } = new();
+
+        public float InitialSpawnInterval { get; set; } = 250;
+        public int MaxWaveSize { get; set; } = 10;
+        public int InitialRespawnTokens { get; set; } = RespawnTokensManager.DefaultTokensCount;
+
     }
 }

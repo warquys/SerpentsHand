@@ -1,16 +1,7 @@
-﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
+﻿using System;
 using Exiled.Loader;
 using MEC;
 using PlayerRoles;
-using Respawning;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Exiled.API.Enums;
-using Exiled.Events.EventArgs.Map;
-using Respawning.Waves;
 
 namespace SerpentsHand
 {
@@ -19,113 +10,19 @@ namespace SerpentsHand
 		private Plugin _plugin;
         public EventHandlers(Plugin plugin) => _plugin = plugin;
 
-		private int Respawns;
-		private int SHRespawns;
-        private CoroutineHandle calcuationCoroutine;
-
-		public void OnRoundStarted()
+		public void Enable()
 		{
-			Plugin.Instance.IsSpawnable = false;
-			Plugin.Instance.IsForced = false;
-			Respawns = 0;
-			SHRespawns = 0;
+            ServerEvents.EndingRound += OnEndingRound;
+        }
 
-			Timing.KillCoroutines(calcuationCoroutine);
-
-			calcuationCoroutine = Timing.RunCoroutine(SpawnCalculation());
-		}
-
-		private IEnumerator<float> SpawnCalculation()
+		public void Disable()
 		{
-			while (true)
-			{
-				yield return Timing.WaitForSeconds(1f);
-
-				if (Round.IsEnded)
-					break;
-
-				//if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != Plugin.Instance.Config.SpawnWaveCalculation)
-				//	continue;
-
-				if (Respawn.IsSpawning)
-					continue;
-
-				if (Respawn.NextKnownSpawnableFaction == SpawnableFaction.ChaosMiniWave &&
-				    Plugin.Instance.Config.SpawnManager.ShSpawnsDuringMiniWave)
-				{
-					Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SpawnManager.SpawnChance &&
-						Respawns >= Plugin.Instance.Config.SpawnManager.RespawnDelay &&
-						SHRespawns < Plugin.Instance.Config.SpawnManager.MaxSpawns || Plugin.Instance.IsForced;
-				}
-				else if (Respawn.NextKnownSpawnableFaction == SpawnableFaction.ChaosWave)
-				{
-					Plugin.Instance.IsSpawnable = Loader.Random.Next(100) <= Plugin.Instance.Config.SpawnManager.SpawnChance &&
-						Respawns >= Plugin.Instance.Config.SpawnManager.RespawnDelay &&
-						SHRespawns < Plugin.Instance.Config.SpawnManager.MaxSpawns || Plugin.Instance.IsForced;
-				}
-					
-			}
-		}
-		public void OnAnnouncingChaosEntrance(AnnouncingChaosEntranceEventArgs ev)
-		{
-			if (Plugin.Instance.IsSpawnable)
-				ev.IsAllowed = false;
-			if (Plugin.Instance.Config.BlockChaosCassie)
-				ev.IsAllowed = false;
-		}
-		public void OnRespawningTeam(RespawningTeamEventArgs ev)
-		{
-			if (Plugin.Instance.IsSpawnable || Plugin.Instance.IsForced)
-			{
-				bool scpAlive = Player.List.Count(x => x.Role.Team == Team.SCPs) != 0;
-				if (!scpAlive && !Plugin.Instance.Config.SpawnManager.CanSpawnWithoutScps)
-					return;
-				
-				List<Player> players = ev.Players.GetRange(0, ev.Players.Count > Plugin.Instance.Config.SpawnManager.MaxSquad 
-					? Plugin.Instance.Config.SpawnManager.MaxSquad 
-					: ev.Players.Count);
-				int SerpentsSpawnCount = 0;
-				foreach (Player player in players)
-				{
-                    if (player is null)
-						continue;
-
-                    if (SerpentsSpawnCount == 0)
-                    {
-                        Plugin.Instance.Config.SerpentsHandLeader.AddRole(player);
-						SerpentsSpawnCount++;
-                    }
-                    else if (SerpentsSpawnCount >= 1 && SerpentsSpawnCount <= 3)
-                    {
-                        Plugin.Instance.Config.SerpentsHandSpecialist.AddRole(player);
-						SerpentsSpawnCount++;
-                    }
-                    else
-                    {
-                        Plugin.Instance.Config.SerpentsHand.AddRole(player);
-                    }
-                }
-				SHRespawns++;
-				if (!string.IsNullOrEmpty(Plugin.Instance.Config.SpawnManager.EntryAnnoucement))
-					Cassie.MessageTranslated(Plugin.Instance.Config.SpawnManager.EntryAnnoucement, Plugin.Instance.Config.SpawnManager.CassieText, isSubtitles: Plugin.Instance.Config.SpawnManager.Subtitles);
-
-				if (Plugin.Instance.Config.SpawnManager.EntryBroadcast.Duration > 0 || !string.IsNullOrEmpty(Plugin.Instance.Config.SpawnManager.EntryBroadcast.Content))
-					foreach (Player player in Player.List.Where(x => x.Role.Team == Team.SCPs))
-						player.Broadcast(Plugin.Instance.Config.SpawnManager.EntryBroadcast);
-
-				Plugin.Instance.IsSpawnable = false;
-				Plugin.Instance.IsForced = false;
-				ev.IsAllowed = false;
-			}
-
-			//Timing.CallDelayed(1 /*, UpdateCounter*/);
-			
-			Respawns++;
-		}
+            ServerEvents.EndingRound -= OnEndingRound;
+        }
 
 		public void OnEndingRound(EndingRoundEventArgs ev)
 		{
-			int serpentsHandCount = _plugin.Config.SerpentsHand.TrackedPlayers.Count +
+			int serpentsHandCount = _plugin.Config.SerpentsHandSolder.TrackedPlayers.Count +
 			                        _plugin.Config.SerpentsHandSpecialist.TrackedPlayers.Count +
 			                        _plugin.Config.SerpentsHandLeader.TrackedPlayers.Count;
 
